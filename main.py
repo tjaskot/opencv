@@ -1,8 +1,9 @@
-# https://realpython.com/pysimplegui-python/
-import os
+# https://realpython.com/pysimplegui-python/   - guided reference
 
-import PySimpleGUI as sg
+import os
 import cv2
+import time
+import PySimpleGUI as sg
 from layout import layout
 
 
@@ -17,7 +18,8 @@ window = sg.Window("OpenCV Integration", layout, location=(0, 0), grab_anywhere=
 # If window needs to be full screen, uncomment line below
 # window.Maximize()
 
-cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('videos/dyna_pre.mp4')
 
 while True:
     event, values = window.read(timeout=20)
@@ -30,7 +32,6 @@ while True:
 
     if values["-THRESH-"]:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)[:, :, 0]
-        # TODO: Frame is being revalued here and line 32 has no use...purpose?
         frame = cv2.threshold(
             frame, values["-THRESH SLIDER-"], 255, cv2.THRESH_BINARY
         )[1]
@@ -38,15 +39,8 @@ while True:
         frame = cv2.Canny(
             frame, values["-CANNY SLIDER A-"], values["-CANNY SLIDER B-"]
         )
-        # TODO: Incorrect python3 indentation syntax, which version is currently being used?
-        # if values["-BLUR-"]: # TODO: Are we saying here that values can be both CANNY and BLUR?
-        #     frame = cv2.GaussianBlur(frame, (21, 21), values["-BLUR SLIDER-"])
-        # )
     elif values["-BLUR-"]:
         frame = cv2.GaussianBlur(frame, (21, 21), values["-BLUR SLIDER-"])
-        # if values["-CANNY-"]: # TODO: Are we saying here that values can be both CANNY and BLUR? Same as question above
-        #     frame = cv2.Canny(
-        #         frame, values["-CANNY SLIDER A-"], values["-CANNY SLIDER B-"]
     elif values["-HUE-"]:
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         frame[:, :, 0] += int(values["-HUE SLIDER-"])
