@@ -1,0 +1,12 @@
+.idea
+secret.txt
+secrets.txt
+creds.txt
+credentials.txt
+secrets
+creds
+secret
+cred
+venv
+__pycache__
+node_modules
