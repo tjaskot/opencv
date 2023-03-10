@@ -1,8 +1,60 @@
+import os
 import cv2
 import time
-import PySimpleGUI as sg
-from layout import layout as main2layout
+import json
+import layout
+import PySimpleGUI
 
+# class MyClass:
+#     def __init__(self):
+#         self.l = list
+#
+#     def __repr__(self):
+#         return f'{self.l}'
+#
+#
+# my_c = MyClass()
+# my_c.l = ['1', '2']
+# print(my_c.l)
+# print(my_c)
+
+# exit()
+
+class Layout:
+    def __init__(self):
+        self.text = PySimpleGUI.Text()
+        self.image = PySimpleGUI.Image()
+        self.thres_slider = list
+        self.canny_slider = list
+        self.blur_slider = list
+        self.hue_slider = list
+        self.enhance_slider = list
+
+    def __repr__(self):
+        return (f"Layout Inner Class Properties -\n"
+                f"Text object: {self.text}\n"
+                f"Image object: {self.image}\n"
+                f"Threshold object list: {self.thres_slider}\n"
+                f"Canny object list: {self.canny_slider}\n"
+                f"Blur object list: {self.blur_slider}\n"
+                f"Hue object list: {self.hue_slider}\n"
+                f"Enhance object list: {self.enhance_slider}\n"
+                )
+
+
+my_c = Layout()
+my_c.text.DisplayText = "OpenCV Demo"
+my_c.text.Size = (60, 1)
+my_c.text.Justification = "center"
+print(my_c.text)
+
+
+exit()
+with open("layout.json", "w") as layout_json, open("layout.py", "r") as layout_py:
+    l_py_txt = layout_py.read().splitlines()
+    json.dump(l_py_txt[2:], layout_json)
+
+exit()
 
 sg.theme("LightGreen")
 
@@ -17,15 +69,8 @@ if not cap.isOpened():
     print("Video not located, please correct.")
 
 # Instead of true, use isOpened for video, and potential repeat if needed
-while cap.isOpened():
-    res, frame = cap.read()
-    print(res)
 
-cap.release()
-time.sleep(2)
-window.close()
-
-
+# TODO: open one frame, then with button continue to video
 
 
 exit()
@@ -63,3 +108,5 @@ while True:
     window["-IMAGE-"].update(data=imgbytes)
 
     window.close()
+
+cap.release()
