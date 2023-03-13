@@ -1,4 +1,5 @@
 import PySimpleGUI
+import copy
 
 
 def add_slider(radio_name, radio_key, slider_key, radio_type="Radio", radio_size=(10, 1), slider_default=128,
@@ -33,7 +34,9 @@ def add_slider(radio_name, radio_key, slider_key, radio_type="Radio", radio_size
     """
     slider_list = []  # Array needed for objects added to list
     # Example: sg.Radio("threshold", "Radio", size=(10, 1), key="-THRESH-")
+    # print(radio_key)
     layout_radio = PySimpleGUI.Radio(radio_name, radio_type, radio_size, radio_key)
+    # print(layout_radio.Key)
     slider_list.append(layout_radio)
     # We need to verify with Radio key if the slider will be Canny, then add two slider key objects instead of one
     if radio_key == "-CANNY-":
@@ -71,3 +74,94 @@ def add_slider(radio_name, radio_key, slider_key, radio_type="Radio", radio_size
 #         justifys = "center"
 #     sg_obj.Text(title, size=sizing, justification=justifys)
 #     return sg_obj.Text
+
+# JSON object for manipulation when needed where Class objects don't suffice.
+#  - Can repurpose dict values to PySimpleGUI objects.
+#  - Example:   layout_json["sg_image"]= [], layout_json["sg_image"] = PySimpleGUI.Image(<parameters>)
+layout_json = {
+    "sg_text": [
+        "sg_text"
+    ],
+    "sg_image": [
+        "sg_image"
+    ],
+    #        [sg.Radio("None", "Radio", True, size=(10, 1))],
+    "sg_thres": [],
+    "sg_canny": [],
+    "sg_blur": '"sg_radio", "sg_slider"',
+    "sg_hue": '"sg_radio", "sg_slider"',
+    "sg_enhance": '"sg_radio", "sg_slider"',
+    "sg_button": [
+        "sg_button"
+    ]
+}
+
+manual_layout = [
+    [PySimpleGUI.Text("OpenCV Demo", size=(60, 1), justification="center")],
+    [PySimpleGUI.Image(filename="", key="-IMAGE-")],
+    #        [PySimpleGUI.Radio("None", "Radio", True, size=(10, 1))],
+    [
+        PySimpleGUI.Radio("threshold", "Radio", size=(10, 1), key="-THRESH-"),
+        PySimpleGUI.Slider(
+            (0, 255),
+            128,
+            1,
+            orientation="h",
+            size=(40, 15),
+            key="-THRESH SLIDER-",
+        ),
+    ],
+    [
+        PySimpleGUI.Radio("canny", "Radio", size=(10, 1), key="-CANNY-"),
+        PySimpleGUI.Slider(
+            (0, 255),
+            128,
+            1,
+            orientation="h",
+            size=(20, 15),
+            key="-CANNY SLIDER A-",
+        ),
+        PySimpleGUI.Slider(
+            (0, 255),
+            128,
+            1,
+            orientation="h",
+            size=(20, 15),
+            key="-CANNY SLIDER B-",
+        ),
+    ],
+    [
+        PySimpleGUI.Radio("blur", "Radio", size=(10, 1), key="-BLUR-"),
+        PySimpleGUI.Slider(
+            (1, 11),
+            1,
+            1,
+            orientation="h",
+            size=(40, 15),
+            key="-BLUR SLIDER-",
+        ),
+    ],
+    [
+        PySimpleGUI.Radio("hue", "Radio", size=(10, 1), key="-HUE-"),
+        PySimpleGUI.Slider(
+            (0, 225),
+            0,
+            1,
+            orientation="h",
+            size=(40, 15),
+            key="-HUE SLIDER-",
+        ),
+    ],
+    [
+        PySimpleGUI.Radio("enhance", "Radio", size=(10, 1), key="-ENHANCE-"),
+        PySimpleGUI.Slider(
+            (1, 255),
+            128,
+            1,
+            orientation="h",
+            size=(40, 15),
+            key="-ENHANCE SLIDER-",
+        ),
+    ],
+    [PySimpleGUI.Button("Exit", size=(10, 1))],
+]
